@@ -1,25 +1,21 @@
-// Napišite funkciju koja vraća indeks najmanjeg elementa jednodimenzionalnog
-// polja cijelih brojeva te nakon toga preopteretite tu funkciju tako da radi i s
-// poljima double tipa, poljima vektora (zadatak 2) i string objektima (4 funkcije).
-// Funkcija ne treba podrazumijevati duljinu predanog joj polja.
+// Napiši klasu koja predstavlja vektor u trodimenzionalnom prostoru sa
+// atributima za i, j, k komponente. Za navedenu klasu napišite podrazumijevani i
+// parametarski konstruktor te preopteretite 4 operatora za tu klasu (1
+// aritmetički, 1 relacijski, 1 U/I te operator = (pridruživanja)). U glavnoj funkciji
+// testirajte sve operatore koje ste preopteretili (u slučaju da niste preopteretili
+// << ispišite rezultirajuće vektore odgovarajućom metodom za ispis).
 #include <iostream>
-#include <string>
-#include<cmath>
 using namespace std;
 class Vector
 {
-	friend bool operator<(const Vector& ref1, const Vector& ref2);
+	friend Vector operator+(const Vector&, const Vector&);
+	friend bool operator==(const Vector&, const Vector&);
+	friend ostream& operator<<(ostream&, Vector&);
 	double i, j, k;
 public:
+	Vector& operator=(const Vector&);
 	Vector();
 	Vector(double, double, double);
-	Vector& operator=(const Vector& ref)
-	{
-		i = ref.i;
-		j = ref.j;
-		k = ref.k;
-		return *this;
-	}
 };
 Vector::Vector()
 {
@@ -33,76 +29,39 @@ Vector::Vector(double i, double j, double k)
 	this->j = j;
 	this->k = k;
 }
-bool operator<(const Vector& ref1, const Vector& ref2)
+Vector& Vector::operator=(const Vector& ref)
 {
-	return(sqrt(ref1.i*ref1.i+ref1.j*ref1.j+ref1.k+ref1.k)<sqrt(ref2.i * ref2.i + ref2.j * ref2.j + ref2.k + ref2.k));
+	if (this == &ref)
+		return *this;
+	i = ref.i;
+	j = ref.j;
+	k = ref.k;
+	return *this;
 }
-int function(int* polje, int n)
+Vector operator+(const Vector& v1, const Vector& v2)
 {
-	int i;
-	int najmanji = polje[0];
-	int indeks = 0;
-	for (i = 1; i < n; i++)
-	{
-		if (polje[i] < najmanji)
-		{
-			najmanji = polje[i];
-			indeks = i;
-		}
-	}
-	return indeks;
+	return Vector((v1.i + v2.i), (v1.j + v2.j), (v1.k + v2.k));
 }
-int function(double* polje, int n)
+bool operator==(const Vector& v1, const Vector& v2)
 {
-	int i;
-	double najmanji = polje[0];
-	int indeks = 0;
-	for (i = 1; i < n; i++)
-	{
-		if (polje[i] < najmanji)
-		{
-			najmanji = polje[i];
-			indeks = i;
-		}
-	}
-	return indeks;
+	return(v1.i == v2.i && v1.j == v2.j && v1.k == v2.k);
 }
-int function(Vector polje[], int n)
+ostream& operator<<(ostream& izlaz, Vector& ref)
 {
-	int i;
-	Vector najmanji = polje[0];
-	int indeks = 0;
-	for (i = 1; i < n; i++)
-	{
-		if (polje[i] < najmanji)
-		{
-			najmanji = polje[i];
-			indeks = i;
-		}
-	}
-	return indeks;
-}
-int function(string* polje,int n)
-{
-	int i;
-	string najmanji = polje[0];
-	int indeks = 0;
-	for (i = 0; i<n; i++)
-	{
-		if (polje[i] < najmanji)
-		{
-			najmanji = polje[i];
-			indeks = i;
-		}
-	}
-	return indeks;
+	izlaz << "Vektor je: " << ref.i << "i + " << ref.j << "j + " << ref.k << "k ." << endl;
+	return izlaz;
 }
 int main()
 {
-	int a[5] = { 1,2,3,4,0 };
-	double b[5] = { 1.1,0.7,15,0.002,0.014 };
-	Vector v1[3] = { Vector(1,2,3),Vector(2,3,4),Vector(0,0,0) };
-	string c[4] = { "Recenica recenica","a"," jedan dva tri","abcd"};
-	cout << function(a, 5) << " " << function(b, 5) << " " << function(c,4) << " " << function(v1, 3) << endl;
+	Vector v1 = Vector(1, 2, 3);
+	Vector v2 = Vector(3, 7, 4);
+	Vector v3 = Vector(4, 9, 7);
+	Vector v4;
+	cout << v1;
+	v4 = v1 + v2;
+	if (v4 == v3)
+		cout << "Vektori su jednaki." << endl;
+	else
+		cout << "Vektori nisu jednaki." << endl;
 	return 0;
 }
