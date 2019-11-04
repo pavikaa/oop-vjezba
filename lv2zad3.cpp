@@ -8,7 +8,7 @@
 using namespace std;
 class Vector
 {
-	friend bool operator<(const Vector& ref1, const Vector& ref2);
+	friend bool operator<(Vector& ref1,Vector& ref2);
 	double i, j, k;
 public:
 	Vector();
@@ -20,6 +20,7 @@ public:
 		k = ref.k;
 		return *this;
 	}
+	double modul();
 };
 Vector::Vector()
 {
@@ -33,9 +34,13 @@ Vector::Vector(double i, double j, double k)
 	this->j = j;
 	this->k = k;
 }
-bool operator<(const Vector& ref1, const Vector& ref2)
+double Vector::modul()
 {
-	return(sqrt(ref1.i*ref1.i+ref1.j*ref1.j+ref1.k+ref1.k)<sqrt(ref2.i * ref2.i + ref2.j * ref2.j + ref2.k + ref2.k));
+	return(sqrt(i*i +j*j +k*k));
+}
+bool operator<(Vector& ref1,Vector& ref2)
+{
+	return(ref1.modul()<ref2.modul());
 }
 int function(int* polje, int n)
 {
