@@ -13,29 +13,31 @@ class Vector
 	friend ostream& operator<<(ostream&, Vector&);
 	double i, j, k;
 public:
+	Vector& operator=(const Vector&);
 	Vector();
 	Vector(double, double, double);
-	Vector& operator=(const Vector& ref)
-		{
-		  i = ref.i;
-		  j = ref.j;
-		  k = ref.k;
-		  return *this;
-		}
 };
-		Vector::Vector()
-		{
-			i = 0.0;
-			j = 0.0;
-			k = 0.0;
-		}
-		Vector::Vector(double i, double j, double k)
-		{
-			this->i = i;
-			this->j = j;
-			this->k = k;
-		}
-
+Vector::Vector()
+{
+	i = 0.0;
+	j = 0.0;
+	k = 0.0;
+}
+Vector::Vector(double i, double j, double k)
+{
+	this->i = i;
+	this->j = j;
+	this->k = k;
+}
+Vector& Vector::operator=(const Vector& ref)
+{
+	if (this == &ref)
+		return *this;
+	i = ref.i;
+	j = ref.j;
+	k = ref.k;
+	return *this;
+}
 Vector operator+(const Vector& v1, const Vector& v2)
 {
 	return Vector((v1.i + v2.i), (v1.j + v2.j), (v1.k + v2.k));
@@ -55,11 +57,11 @@ int main()
 	Vector v2 = Vector(3, 7, 4);
 	Vector v3 = Vector(4, 9, 7);
 	Vector v4;
-		cout << v1;
-		v4 = v1 + v2;
-		if (v4 == v3)
-			cout << "Vektori su jednaki." << endl;
-		else
-			cout << "Vektori nisu jednaki." << endl;
+	cout << v1;
+	v4 = v1 + v2;
+	if (v4 == v3)
+		cout << "Vektori su jednaki." << endl;
+	else
+		cout << "Vektori nisu jednaki." << endl;
 	return 0;
 }
