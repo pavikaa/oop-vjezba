@@ -2,7 +2,7 @@
 #include<string>
 #include<fstream>
 #include <time.h>
-#include "header.h"
+#include "episodes.h"
 //Description
 int Description::getnoEpisode() const
 {
@@ -28,22 +28,6 @@ void Description::setName(std::string name)
 {
 	this->name = name;
 }
-Description::Description()
-{
-	setnoEpisode(0);
-	setLength(0);
-	setName("Pilot");
-}
-Description::Description(int noEpisode, float length, std::string name)
-{
-	setnoEpisode(noEpisode);
-	setLength(length);
-	setName(name);
-}
-Description::~Description()
-{
-
-}
 Description& Description::operator=(const Description& ref)
 {
 	this->noEpisode = ref.noEpisode;
@@ -52,23 +36,6 @@ Description& Description::operator=(const Description& ref)
 	return *this;
 }
 //Episode
-Episode::Episode()
-{
-	this->numOfViewers = 0;
-	this->gradeSum = 0.0;
-	this->maxScore = 0.0;
-}
-Episode::Episode(int numOfViewers, double gradeSum, double maxScore,Description description)
-{
-	this->numOfViewers = numOfViewers;
-	this->gradeSum = gradeSum;
-	this->maxScore = maxScore;
-	this->description = description;
-}
-Episode::~Episode()
-{
-
-}
 void Episode::addView(double grade)
 {
 	this->gradeSum += grade;
@@ -97,29 +64,29 @@ Description Episode::getDescription() const
 
 std::ostream& operator<< (std::ostream& izlaz, const Description& ref)
 {
-	izlaz << ref.noEpisode << "," << ref.length<<","<< ref.name;
+	izlaz << ref.noEpisode << "," << ref.length << "," << ref.name;
 	return izlaz;
 }
-std::ostream& operator<< (std::ostream& izlaz,const Episode& ref)
+std::ostream& operator<< (std::ostream& izlaz, const Episode& ref)
 {
-	izlaz << ref.numOfViewers << " ," << ref.maxScore << "," << ref.gradeSum <<","<<ref.description;
+	izlaz << ref.numOfViewers << " ," << ref.maxScore << "," << ref.gradeSum << "," << ref.description;
 	return izlaz;
 }
 std::istream& operator>> (std::istream& ulaz, Description& ref)
 {
 	char a;
 	std::string name;
-	ulaz >> ref.noEpisode >> a >> ref.length>>a;
-	std::getline(ulaz,ref.name);
+	ulaz >> ref.noEpisode >> a >> ref.length >> a;
+	std::getline(ulaz, ref.name);
 	return ulaz;
 }
 std::istream& operator>> (std::istream& ulaz, Episode& ref)
 {
 	char a;
-	ulaz >> ref.numOfViewers >>a>> ref.maxScore >>a>> ref.gradeSum >>a>>ref.description;
+	ulaz >> ref.numOfViewers >> a >> ref.maxScore >> a >> ref.gradeSum >> a >> ref.description;
 	return ulaz;
 }
-void print(Episode** ref,const int n)
+void print(Episode** ref, const int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
@@ -132,11 +99,11 @@ double generateRandomScore()
 {
 	return (double)rand() / RAND_MAX * (10.0);
 }
-void persistToFile(std::string name, Episode** episodes,const int COUNT)
+void persistToFile(std::string name, Episode** episodes, const int COUNT)
 {
 	std::ofstream output(name);
 	for (int i = 0; i < COUNT; i++) {
-		output << *episodes[i]<<"\n";
+		output << *episodes[i] << "\n";
 	}
 	output.close();
 }
@@ -151,16 +118,15 @@ void sort(Episode** episodes, const int COUNT)
 	}
 }
 
-	bool operator>(const Episode &ref1, const Episode &ref2)
-	{
+bool operator>(const Episode& ref1, const Episode& ref2)
+{
 
-		return(ref1.description.getName() > ref2.description.getName());
-	}
-	void swap(Episode& ref1, Episode& ref2)
-	{
-		Episode temp;
-		temp = ref1;
-		ref1 = ref2;
-		ref2 = temp;
-
-	}
+	return(ref1.description.getName() > ref2.description.getName());
+}
+void swap(Episode& ref1, Episode& ref2)
+{
+	Episode temp;
+	temp = ref1;
+	ref1 = ref2;
+	ref2 = temp;
+}

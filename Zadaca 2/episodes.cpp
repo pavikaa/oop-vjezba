@@ -4,14 +4,14 @@
 #include <iostream>
 #include<string>
 #include<fstream>
-#include "header.h"
+#include "episodes.h"
 int main()
 {
 	Description description(1, 45, "Pilot");
 	std::cout << description << std::endl;
 	Episode episode(10, 88.64, 9.78, description);
 	std::cout << episode << std::endl;
-	// Assume that the number of rows in the text file is always at least 10. 
+	// Assume that the number of rows in the text file is always at least 10.
 	// Assume a valid input file.
 	std::string fileName("shows.tv");
 	const int COUNT = 10;
