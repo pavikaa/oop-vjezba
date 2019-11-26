@@ -29,9 +29,22 @@ void random(Tip* polje, int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		polje[i]=(Tip)rand();
+		polje[i] = (Tip)rand();
 	}
 }
+
+template <>
+void random(char* polje, int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		int r = rand() % 26;
+		polje[i] ='a' + r;
+		
+	}
+}
+
+
 int main()
 {
 	srand(time(NULL));
@@ -39,9 +52,9 @@ int main()
 	int* p1 = new int[n];
 	double* p2 = new double[n];
 	char* p3 = new char[n];
-	random(p1,n);
-	random(p2,n);
-	random(p3,n);
+	random(p1, n);
+	random(p2, n);
+	random(p3, n);
 	print(p1, n);
 	std::cout << std::endl;
 	print(p2, n);
@@ -56,8 +69,8 @@ int main()
 	print(p2, n);
 	std::cout << std::endl;
 	print(p3, n);
-	delete [] p1;
-	delete [] p2;
-	delete [] p3;
+	delete[] p1;
+	delete[] p2;
+	delete[] p3;
 	return 0;
 }
