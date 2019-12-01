@@ -11,7 +11,6 @@ int main()
 	std::string fileName("shows.tv");
 	const int COUNT = 10;
 	Episode** episodes = loadEpisodesFromFile(fileName, COUNT);
-
 	const Season* season = new Season(episodes, COUNT);
 	Season* seasonCopy = new Season(*season);
 
@@ -32,7 +31,6 @@ int main()
 	if (&seasonCopy[0] == &season[0]) {
 		std::cout << "HW points--" << std::endl;
 	}
-
 	std::cout << "Report:" << "\n\t"
 		<< "Avg rating: " << season->getAverageRating() << "\n\t"
 		<< "Total viewers: " << season->getTotalViews() << "\n\t"

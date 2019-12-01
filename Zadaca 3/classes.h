@@ -18,7 +18,6 @@ public:
 	int getnoEpisode() const;
 	float getLength() const;
 	std::string getName() const;
-	Description& operator=(const Description&);
 };
 class Episode
 {
@@ -33,44 +32,46 @@ private:
 	double gradeSum, maxScore;
 public:
 	Episode() : numOfViewers(0), gradeSum(0.0), maxScore(0.0) {}
-	Episode(int numOfViewers, double gradeSum, double maxScore, Description description) : numOfViewers(numOfViewers), gradeSum(gradeSum), maxScore(maxScore) {}
+	Episode(int numOfViewers, double gradeSum, double maxScore, Description description) : numOfViewers(numOfViewers), gradeSum(gradeSum), maxScore(maxScore),description(description) {}
 	~Episode() {}
 	void addView(double);
 	double getMaxScore() const;
 	double getAverageScore() const;
 	int getViewerCount() const;
 	Description getDescription() const;
-	Episode& operator=(const Episode&);
+
 };
 class Season 
 {
 	Episode** episodes;
 	int noOfEpisodes;
 public:
-	Season(Episode** episodes,int noOfEpisodes):noOfEpisodes(noOfEpisodes)
+	Season(Episode** episodess,int noOfEpisodes):noOfEpisodes(noOfEpisodes)
 	{
-		this->episodes = new Episode*[noOfEpisodes];
+		episodes = new Episode*[noOfEpisodes];
 		for (int i = 0; i < noOfEpisodes; i++)
 		{
-			episodes[i] = new Episode;
-			this->episodes[i] = episodes[i];
+			episodes[i] = new Episode();
+			*episodes[i] = *episodess[i];
 		}
 	}
-	Season() :noOfEpisodes(0)
+	Season():noOfEpisodes(0)
 	{
-		this->episodes = new Episode*;
+		episodes = new Episode*;
 	}
 	~Season()
 	{
 		for (int i = 0; i < noOfEpisodes; i++)
 			delete episodes[i];
-		delete[]*episodes;
+		delete[] episodes;
 	}
 	double getAverageRating() const;
 	int getTotalViews () const;
 	Episode& getBestEpisode () const;
 	Season(const Season& ref);
-	 Episode& operator[](int)const;
+	const Episode& operator[](int)const;
+	Season& operator=(const Season&);
+
 };
 double generateRandomScore();
 void print(Episode**, const int);

@@ -28,13 +28,7 @@ void Description::setName(std::string name)
 {
 	this->name = name;
 }
-Description& Description::operator=(const Description& ref)
-{
-	this->noEpisode = ref.noEpisode;
-	this->length = ref.length;
-	this->name = ref.name;
-	return *this;
-}
+
 bool operator==(const Description& ref1, const Description& ref2)
 {
 	return(ref1.getLength() == ref2.getLength() && ref1.getName() == ref2.getName() && ref1.getnoEpisode() == ref2.getnoEpisode());
@@ -87,7 +81,7 @@ std::istream& operator>> (std::istream& ulaz, Description& ref)
 std::istream& operator>> (std::istream& ulaz, Episode& ref)
 {
 	char a;
-	ulaz >> ref.numOfViewers >> a >> ref.maxScore >> a >> ref.gradeSum >> a >> ref.description;
+	ulaz >> ref.numOfViewers >> a >> ref.gradeSum >> a >> ref.maxScore >> a >> ref.description;
 	return ulaz;
 }
 void print(Episode** ref, const int n)
@@ -136,15 +130,12 @@ void swap(Episode& ref1, Episode& ref2)
 }
 Episode** loadEpisodesFromFile(std::string name,const int count)
 {
-	
 	std::ifstream input(name);
-	Episode** episodes=new Episode*[count];
-
 	if (input.is_open() == false)
 		exit(0);
-
+	Episode** episodes = new Episode * [count];
 	for (int i = 0; i < count; i++) {
-		episodes[i] = new Episode();
+		episodes[i] = new Episode;
 		input >> *episodes[i];
 	}
 	input.close();
@@ -153,16 +144,6 @@ Episode** loadEpisodesFromFile(std::string name,const int count)
 bool operator==(const Episode& ref1, const Episode& ref2)
 {
 	return(ref1.getAverageScore() == ref2.getAverageScore() && ref1.getDescription() == ref2.getDescription() && ref1.getMaxScore() == ref2.getMaxScore() && ref1.getViewerCount() == ref2.getViewerCount());
-}
-Episode& Episode::operator=(const Episode& ref)
-{
-	if (&ref == this)
-		return *this;
-	this->description = ref.description;
-	this->gradeSum = ref.gradeSum;
-	this->maxScore = ref.maxScore;
-	this->numOfViewers = ref.numOfViewers;
-	return *this;
 }
 //Season
 double Season::getAverageRating() const
@@ -191,18 +172,31 @@ Episode& Season::getBestEpisode() const
 	}
 	return *bestEpisode;
 }
-Episode& Season::operator[](int i)const
+const Episode& Season::operator[](int i)const
 {
-	if (i >= noOfEpisodes)
+	if (i > noOfEpisodes)
 		exit(0);
 	return *this->episodes[i];
 }
-Season::Season(const Season& ref)
+Season::Season(const Season& ref):noOfEpisodes(ref.noOfEpisodes)
 {
+	episodes = new Episode * [ref.noOfEpisodes];
+	for (int i = 0; i < noOfEpisodes; i++)
+	{
+		episodes[i] = new Episode();
+		*episodes[i] = *ref.episodes[i];
+	}
+}
+Season& Season::operator=(const Season& ref)
+{
+	if (&ref == this)
+		return *this;
 	this->noOfEpisodes = ref.noOfEpisodes;
 	this->episodes = new Episode * [noOfEpisodes];
 	for (int i = 0; i < noOfEpisodes; i++)
 	{
+		episodes[i] = new Episode();
 		this->episodes[i] = ref.episodes[i];
 	}
+	return *this;
 }
