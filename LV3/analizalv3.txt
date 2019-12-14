@@ -1,0 +1,145 @@
+//1.
+/*Napiši klasu MotornoVozilo koja ima podatkovne članove za boju, zapremninu
+spremnika goriva, trenutnu razinu goriva i prosječnu potrošnju, defaultni i
+parametarski konstruktor, metodu Oboji koja boja vozilo, Natoci koja puni
+gorivo i čistu virtualnu metodu Vozi, koja kao parametar ima broj kilometara
+koliko se vozi. Napiši klasu Automobil koja nasljeđuje klasu MotornoVozilo, a
+ima podatkovne članove za model i max. brzinu te defaultni i parametarski
+konstruktor. Prepiši metodu vozi, tako da umanjuje količinu goriva prema
+broju kilometara koje se vozi i prosječnoj potrošnji. Napraviti garažu (1D polje
+MotornihVozila) i provozati svako vozilo iz garaže.*/
+#include <iostream>
+class MotornoVozilo
+{
+public:
+	float razinaGoriva;
+protected:
+	std::string boja;
+	float zapremnina;
+	float prosjecnaPotrosnja;
+public:
+	MotornoVozilo() :boja("crna"), zapremnina(0.0), razinaGoriva(0.0), prosjecnaPotrosnja(0.0) {}
+	MotornoVozilo(std::string boja, float zapremnina, float razinaGoriva, float prosjecnaPotrosnja) :boja(boja), zapremnina(zapremnina), razinaGoriva(razinaGoriva), prosjecnaPotrosnja(prosjecnaPotrosnja) {}
+	void Oboji(std::string);
+	void Natoci();
+	virtual void Vozi(float) = 0;
+};
+void MotornoVozilo::Oboji(std::string boja)
+{
+	this->boja = boja;
+}
+void MotornoVozilo::Natoci()
+{
+	razinaGoriva = zapremnina;
+}
+class Automobil :public MotornoVozilo
+{
+	std::string model;
+	float maxBrzina;
+public:
+	Automobil():model("None"),maxBrzina(0.0){}
+	Automobil(std::string boja, float zapremnina, float razinaGoriva, float prosjecnaPotrosnja,float maxBrzina, std::string model):model(model),maxBrzina(maxBrzina),MotornoVozilo(boja,zapremnina,razinaGoriva,prosjecnaPotrosnja){}
+	virtual void Vozi(float);
+};
+void Automobil::Vozi(float km)
+{
+	razinaGoriva -= km * prosjecnaPotrosnja / 100;
+}
+int main()
+{
+	int i;
+	Automobil automobili[2];
+	automobili[0] = Automobil("crna", 60, 27.5, 6.7, 180, "Focus");
+	automobili[1] = Automobil("bijela", 65, 32, 7, 170, "Astra");
+	for (i = 0; i < 2; i++)
+	{
+		std::cout << automobili[i].MotornoVozilo::razinaGoriva << std::endl;
+	}
+	for (i = 0; i < 2; i++)
+	{
+		automobili[i].Vozi(10);
+	}
+	for (i = 0; i < 2; i++)
+	{
+		std::cout << automobili[i].MotornoVozilo::razinaGoriva << std::endl;
+	}
+return 0;
+}
+//2.
+/*Napiši klasu Kalkulator koja predstavlja i ima mogućnosti osnovnog kalkulatora
+(unesi operande, zbroji, oduzmi, pomnozi, podijeli, prikaži rezultat). Iz nje
+izvedi klasu znanstveni kalkulator koja omogućuje dodatne operacije poput
+korjenovanja, potenciranja te onih operacija koje smatrate nužnima*/
+#include<iostream>
+#include<cmath>
+class Kalkulator
+{
+protected:
+	float a, b, rezultat;
+public:
+	Kalkulator():a(0),b(0),rezultat(0.0){}
+	Kalkulator(float a, float b):a(a),b(b),rezultat(0.0){}
+	void unesiOperande(float, float);
+	void zbroji();
+	void oduzmi();
+	void pomnozi();
+	void podijeli();
+	void prikaziRezultat();
+};
+void Kalkulator::unesiOperande(float a, float b)
+{
+	this->a = a;
+	this->b = b;
+}
+void Kalkulator::zbroji()
+{
+	rezultat = a + b;
+}
+void Kalkulator::oduzmi()
+{
+	rezultat = a - b;
+}
+void Kalkulator::pomnozi()
+{
+	rezultat = a * b;
+}
+void Kalkulator::podijeli()
+{
+	rezultat = a / b;
+}
+void Kalkulator::prikaziRezultat()
+{
+	std::cout << rezultat << std::endl;
+}
+class znanstveniKalkulator:public Kalkulator
+{
+public:
+	znanstveniKalkulator(){}
+	znanstveniKalkulator(float a,float b):Kalkulator(a,b){}
+	void korjen();
+	void kvadrat();
+	void potencija(int);
+};
+void znanstveniKalkulator::korjen()
+{
+	rezultat = sqrt(a);
+}
+void znanstveniKalkulator::kvadrat()
+{
+	rezultat = pow(a,2);
+}
+void znanstveniKalkulator::potencija(int a)
+{
+	rezultat = pow(this->a, a);
+}
+int main()
+{
+	znanstveniKalkulator a(2, 4);
+	a.zbroji();
+	a.prikaziRezultat();
+	znanstveniKalkulator b;
+	b.unesiOperande(10, 20);
+	b.kvadrat();
+	b.prikaziRezultat();
+
+}

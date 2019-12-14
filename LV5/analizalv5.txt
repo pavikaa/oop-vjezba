@@ -1,0 +1,146 @@
+//Proširi drugi zadatak iz vježbe br. 3 (predložak klase stog) tako da se podigne
+//iznimka StogExc izvedena iz osnovne klase exception u slučaju da se pokuša
+//umetnuti element na pun stog ili skinuti element sa praznog stoga.Napisati
+//odgovarajuću main funkciju, koja će sadržavati blokove pokušaja i hvatanja.
+#include <iostream>
+#include<cstdlib>
+#include<ctime>
+class StackExc : public std::exception{
+private:
+	const char* poruka;
+public:
+	StackExc(const char*);
+	virtual const char* what() const throw();
+};
+StackExc::StackExc(const char* tekst) : poruka(tekst) {}
+const char* StackExc::what() const throw() { return poruka; }
+
+template <class Tip>
+class Stack
+{
+	int size;
+	int brElementa = 0;
+	Tip* polje;
+public:
+	Stack() :size(0)
+	{
+		polje = new Tip[0];
+	}
+	Stack(int a) :size(a)
+	{
+		polje = new Tip[a];
+	}
+	~Stack()
+	{
+		delete[] polje;
+	}
+	Stack(const Stack& ref)
+	{
+		size = ref.size;
+		brElementa = ref.brElementa;
+		polje = new Tip[size];
+		for (int i = 0; i < size; i++)
+		{
+			polje[i] = ref.polje[i];
+		}
+	}
+	Stack& operator=(const Stack& ref)
+	{
+		if (this != &ref)
+		{
+			size = ref.size;
+			brElementa = ref.brElementa;
+			delete[]polje;
+			polje = new Tip[size];
+			for (int i = 0; i < size; i++)
+			{
+				polje[i] = ref.polje[i];
+			}
+		}
+		return *this;
+	}
+	void push(Tip a)
+	{
+		if (brElementa < size)
+		{
+			polje[brElementa] = a;
+			brElementa++;
+		}
+		else
+		{
+			throw StackExc("Stog je pun.");
+		}
+
+	}
+	void pop()
+	{
+		if (size == -1) { throw StackExc("Stog je prazan."); }
+		else
+		brElementa--;
+	}
+	Tip peek()
+	{
+		return polje[brElementa - 1];
+	}
+};
+int main()
+{
+	srand(time(NULL));
+	Stack<int> s1(10);
+	Stack<float> s2(5);
+	Stack<int> s3;
+	try {
+		for (int i = 0; i < 7; i++) {
+			s1.push(rand());
+			std::cout << s1.peek() << std::endl;
+		}
+		for (int i = 0; i < 7; i++)
+		{
+			s2.push((float)rand());
+		}
+		for (int i = 0; i < 7; i++) {
+			s3.push((float)rand());
+		}
+	}
+	catch (StackExc & except) {
+		std::cout << except.what() << std::endl;
+		std::cout << "Closing program!" << std::endl;
+	}
+	catch (...) {
+		std::cout << "Error!\nClosing program!" << std::endl;
+	}
+	return 0;
+}
+//Proširi klasu razlomak iz vježbe br. 2 tako da se podigne iznimka u slučaju
+//konstruiranja razlomka sa nazivnikom = 0. U mainu napisati blokove pokušaja i
+//hvatanja iznimke.
+#include <iostream>
+class Razlomak
+{
+private:
+	int b;
+	int n;
+public:
+	Razlomak():b(1),n(1){}
+	Razlomak(int x, int y) :b(x), n(y)
+	{
+		if (n == 0)
+		{
+			throw "Pokustali ste konstruirati razlomak s nazivnikom 0.";
+		}
+	}
+};
+
+int main()
+{
+	try
+	{
+		Razlomak(0, 2);
+		Razlomak(2, 0);
+	}
+	catch (const char *msg)
+	{
+		std::cout << msg << std::endl;
+	}
+	return 0;
+}
