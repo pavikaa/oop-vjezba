@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,29 +8,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace lv6zad2
 {
     public partial class Form1 : Form
     {
         List<Kontakt> listKontakti = new List<Kontakt>();
         string path = "D:\\kontakti.txt";
+        bool check=false;
+        int i;
         public Form1()
         {
             InitializeComponent();
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             bool empty = false;
-            if (textBox1.Text == "" ||textBox2.Text == "" || textBox3.Text == "")
+            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
             {
                 empty = true;
                 MessageBox.Show("Neko od polja ostalo je prazno.");
             }
             else
                 empty = false;
-            
+
             if (!empty)
             {
                 Kontakt K = new Kontakt(textBox1.Text, textBox2.Text, textBox3.Text);
@@ -38,6 +44,11 @@ namespace lv6zad2
                 lb_Kontakti.DataSource = null;
                 lb_Kontakti.DataSource = listKontakti;
             }
+        }
+
+        private void lb_Kontakti_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -56,12 +67,7 @@ namespace lv6zad2
             }
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void izlaz_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
             using (System.IO.StreamWriter write = new System.IO.StreamWriter(@path))
             {
@@ -75,48 +81,47 @@ namespace lv6zad2
             Application.Exit();
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
+            i = 0;
+            check = false;
             foreach (Kontakt k in listKontakti)
+            {
                 if (k.ToString().Contains(textBox4.Text))
-                    MessageBox.Show("Pronađen.");
-                else MessageBox.Show("Nije pronađen.");
+                {
+                    check = true;
+                    MessageBox.Show("Pronađen. " + listKontakti[i]);
+                }
+                i++;
             }
-
-        private void lb_Kontakti_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
+            if (!check)
+            MessageBox.Show("Nije pronađen.");
         }
-    }
-    class Kontakt
-    {
-        #region data_members
-        private string ime;
-        private string prezime;
-        private string brojTelefona;
-        #endregion
-        #region public_methods
-        public Kontakt()
+        class Kontakt
         {
-            ime = "Ivan";
-            prezime = "Ivanić";
-            brojTelefona = "0000000000";
+            #region data_members
+            private string ime;
+            private string prezime;
+            private string brojTelefona;
+            #endregion
+            #region public_methods
+            public Kontakt()
+            {
+                ime = "Ivan";
+                prezime = "Ivanić";
+                brojTelefona = "0000000000";
+            }
+            public Kontakt(string i, string p, string b)
+            {
+                ime = i;
+                prezime = p;
+                brojTelefona = b;
+            }
+            public override string ToString()
+            {
+                return ime + "\t" + prezime + "\t" + brojTelefona;
+            }
+            #endregion
         }
-        public Kontakt(string i, string p, string b)
-        {
-            ime = i;
-            prezime = p;
-            brojTelefona = b;
-        }
-        public override string ToString()
-        {
-            return ime + "\t" + prezime + "\t" + brojTelefona;
-        }
-        #endregion
     }
 }
