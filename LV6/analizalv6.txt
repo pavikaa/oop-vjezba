@@ -1,0 +1,238 @@
+//Napravite aplikaciju znanstveni kalkulator koja će imati funkcionalnost
+//znanstvenog kalkulatora, odnosno implementirati osnovne (+,-,*,/) i barem 5
+//naprednih (sin, cos, log, sqrt...) operacija.
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace lv6analizazad1
+{
+    public partial class Form1 : Form
+    {
+        double num1, num2;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void minus_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            if (!double.TryParse(tB_2.Text, out num2))
+                MessageBox.Show("Pogrešan unos druge znamenke");
+            result.Text = (num1 - num2).ToString();
+            operation.Text = ("-");
+        }
+
+        private void divide_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            if (!double.TryParse(tB_2.Text, out num2))
+                MessageBox.Show("Pogrešan unos druge znamenke");
+            result.Text = (num1 / num2).ToString();
+            operation.Text = ("/");
+        }
+
+        private void multiply_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            if (!double.TryParse(tB_2.Text, out num2))
+                MessageBox.Show("Pogrešan unos druge znamenke");
+            result.Text = (num1 * num2).ToString();
+            operation.Text = ("*");
+        }
+
+        private void quit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void sin_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            result.Text = Math.Sin(num1).ToString();
+            operation.Text = ("sin(num1)");
+        }
+
+        private void cos_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            result.Text = Math.Cos(num1).ToString();
+            operation.Text = ("cos(num1)");
+        }
+
+        private void tan_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            result.Text = Math.Tan(num1).ToString();
+            operation.Text = ("tan(num1)");
+        }
+
+        private void ctan_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            result.Text = Math.Atan(num1).ToString();
+            operation.Text = ("ctg(num1)");
+        }
+
+        private void sqrt_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            result.Text = Math.Sqrt(num1).ToString();
+            operation.Text = ("sqrt(num1)");
+        }
+
+        private void plus_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(tB_1.Text, out num1))
+                MessageBox.Show("Pogrešan unos prve znamenke");
+            if (!double.TryParse(tB_2.Text, out num2))
+                MessageBox.Show("Pogrešan unos druge znamenke");
+            result.Text = (num1 + num2).ToString();
+            operation.Text = ("+");
+        }
+    }
+}
+
+//Napravite jednostavnu igru vješala. Pojmovi se učitavaju u listu iz datoteke, i u
+//svakoj partiji se odabire nasumični pojam iz liste. Omogućiti svu
+//funkcionalnost koju biste očekivali od takve igre. Nije nužno crtati vješala,
+//dovoljno je na labeli ispisati koliko je pokušaja za odabir slova preostalo.
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace lv6analizazad2
+{
+    public partial class Form1 : Form
+    {
+        Random rand = new Random();
+        List<string> wordList = new List<string>();
+        string path = "D:\\wordlist.txt";
+        int attemptsLeft;
+        string labelWord, listWord;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        public void Reset()
+        {
+            listWord = wordList[rand.Next(0, wordList.Count - 1)];
+            labelWord = new string('*', listWord.Length);
+            tB_2.Text = labelWord;
+            attemptsLeft = 5;
+            label3.Text = attemptsLeft.ToString();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string line;
+            using (System.IO.StreamReader reader = new System.IO.StreamReader(@path))
+            {
+                while ((line = reader.ReadLine()) != null)
+                {
+                    wordList.Add(line);
+                }
+                Reset();
+            }
+        }
+
+        private void quit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tryLetter_Click(object sender, EventArgs e)
+        {
+            if (tB_1.Text.Length == 1)
+            {
+                label2.Text += (tB_1.Text + ", ");
+                if (listWord.Contains(tB_1.Text))
+                {
+                    string temp_word = listWord;
+                    while (temp_word.Contains(tB_1.Text))
+                    {
+                        int index = temp_word.IndexOf(tB_1.Text);
+                        StringBuilder builder = new StringBuilder
+
+                        (temp_word);
+
+                        builder[index] = '*';
+                        temp_word = builder.ToString();
+                        StringBuilder builder2 = new StringBuilder
+
+                        (labelWord);
+
+                        builder2[index] = Convert.ToChar(tB_1.Text);
+                        labelWord = builder2.ToString();
+                    }
+                    tB_2.Text = labelWord;
+                    if (labelWord == listWord)
+                    {
+                        MessageBox.Show("Pobjeda!");
+                        Reset();
+                    }
+                }
+                else
+                {
+                    attemptsLeft--;
+                    label3.Text = attemptsLeft.ToString();
+                    if (attemptsLeft <= 0)
+                    {
+                        MessageBox.Show("Kraj igre!");
+                        Reset();
+                    }
+                    
+                }
+            }
+            else if (tB_1.Text.Length > 1)
+            {
+                if (listWord == tB_1.Text)
+                {
+                    MessageBox.Show("Pobjeda!");
+                    Reset();
+                }
+                else
+                {
+                    attemptsLeft--;
+                    label3.Text = attemptsLeft.ToString();
+                    if (attemptsLeft <= 0)
+                    {
+                        MessageBox.Show("Kraj igre!");
+                        Reset();
+                    }
+                }
+            }
+        }
+    } 
+}
