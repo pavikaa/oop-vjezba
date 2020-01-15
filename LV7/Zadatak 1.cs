@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace LV7_Zad_1
@@ -7,32 +7,23 @@ namespace LV7_Zad_1
     {
         static void Main(string[] args)
         {
-            List<BankAccount> bankList= new List<BankAccount>();
-            List<MobileAccount> mobileList= new List<MobileAccount>();
+            List<IPayable> accountList= new List<IPayable>();
             BankAccount bankAccount = new BankAccount(1500, 1000, "Visa");
             BankAccount bankAccount2 = new BankAccount(1950, 3000, "American");
             MobileAccount mobileAccount = new MobileAccount("+385950000000", 57.5, 0.50);
             MobileAccount mobileAccount2 = new MobileAccount("+385950000001", 67.5, 0.40);
-            bankList.Add(bankAccount);
-            bankList.Add(bankAccount2);
-            mobileList.Add(mobileAccount);
-            mobileList.Add(mobileAccount2);
-            foreach(BankAccount account in bankList)
+            Random random = new Random();
+            accountList.Add(bankAccount);
+            accountList.Add(bankAccount2);
+            accountList.Add(mobileAccount);
+            accountList.Add(mobileAccount2);
+            foreach(IPayable account in accountList)
             {
                 Console.WriteLine(account.getIznos() + "\t");
-                account.addToIznos(50);
+                account.addToIznos(random.Next(1,10));
                 Console.WriteLine(account.getIznos() + "\t");
-                account.subtractFromIznos(20);
+                account.subtractFromIznos(random.Next(1, 10));
                 Console.WriteLine(account.getIznos()+"\t");
-                Console.WriteLine("\n");
-            }
-            foreach (MobileAccount account in mobileList)
-            {
-                Console.WriteLine(account.getIznos() + "\t");
-                account.addToIznos(50);
-                Console.WriteLine(account.getIznos() + "\t");
-                account.subtractFromIznos(20);
-                Console.WriteLine(account.getIznos() + "\t");
                 Console.WriteLine("\n");
             }
         }
@@ -58,6 +49,7 @@ namespace LV7_Zad_1
             }
             public void subtractFromIznos(double iznos)
             {
+                if(iznos<=(this.iznos+this.maxMinus))
                 this.iznos -= iznos;
             }
         }
@@ -83,6 +75,7 @@ namespace LV7_Zad_1
             }
             public void subtractFromIznos(double iznos)
             {
+                if(iznos<=this.stanje)
                 this.stanje -= iznos;
             }
         }
