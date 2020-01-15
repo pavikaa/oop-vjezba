@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,28 +14,25 @@ namespace LV7_Zad_2
     {
         Graphics g;
         bool check = false;
-        List<Pen> pens = new List<Pen>();
-        int i = -1;
+        Pen pen;
         public void update()
         {
             float width = hS.Value;
             if (red.Checked)
             {
-                pens.Add(new Pen(Color.Red, width));
+                pen=new Pen(Color.Red, width);
                 check = true;
             }
             if (blue.Checked)
             {
-                pens.Add(new Pen(Color.Blue, width));
+                pen=new Pen(Color.Blue, width);
                 check = true;
             }
             if (green.Checked)
             {
-                pens.Add(new Pen(Color.Green, width));
+                pen=new Pen(Color.Green, width);
                 check = true;
             }
-            if(check)
-            i++;
         }
         public Form1()
         {
@@ -54,19 +51,19 @@ namespace LV7_Zad_2
             {
                 update();
                 Circle c = new Circle();
-                c.draw(g, pens[i], e.X, e.Y);
+                c.draw(g, pen, e.X, e.Y);
             }
-            if (square.Checked)
+            if (square.Checked && check)
             {
                 update();
                 Square s = new Square();
-                s.draw(g,pens[i],e.X,e.Y);
+                s.draw(g,pen,e.X,e.Y);
             }
-            if (triangle.Checked)
+            if (triangle.Checked && check)
             {
                 update();
                 Triangle t = new Triangle();
-                t.draw(g, pens[i], e.X, e.Y);
+                t.draw(g, pen, e.X, e.Y);
             }
         }
 
@@ -80,7 +77,7 @@ namespace LV7_Zad_2
             Application.Exit();
         }
     }
-    class Circle
+    class Circle:IDrawable
     {
         int r;
         public Circle()
