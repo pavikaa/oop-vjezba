@@ -1,4 +1,4 @@
-﻿//Napravite igru križić-kružić(iks-oks) korištenjem znanja stečenih na ovoj
+//Napravite igru križić-kružić(iks-oks) korištenjem znanja stečenih na ovoj
 //laboratorijskoj vježbi.Omogućiti pokretanje igre, unos imena dvaju igrača, ispis
 //koji igrač je trenutno na potezu, igranje igre s iscrtavanjem križića i kružića na
 //odgovarajućim mjestima te ispis dijaloga s porukom o pobjedi, odnosno
@@ -30,6 +30,7 @@ namespace LV7_analizaa
                 playerOne = tB1.Text;
                 playerTwo = tB2.Text;
                 check = true;
+                onTurn.Text = playerOne;
             }
         }
 
@@ -40,14 +41,14 @@ namespace LV7_analizaa
                 Button b = (Button)sender;
                 if(turn)
                 {
-                    onTurn.Text = playerOne;
+                    onTurn.Text = playerTwo;
                     b.Text = "X";
                     turn = !turn;
                    
                 }
                 else
                 {
-                    onTurn.Text = playerTwo;
+                    onTurn.Text = playerOne;
                     b.Text = "O";
                     turn = !turn;
                 }
@@ -239,6 +240,7 @@ namespace LV7_analizaa
 
         private void restart_Click(object sender, EventArgs e)
         {
+            
             counter = 0;
             A1.Enabled = true;
             A2.Enabled = true;
