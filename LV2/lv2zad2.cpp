@@ -58,7 +58,7 @@ int main()
 	Vector v3 = Vector(4, 9, 7);
 	Vector v4;
 	cout << v1;
-	v4 = v1 + v2;
+	v4 = v2 + v1;
 	if (v4 == v3)
 		cout << "Vektori su jednaki." << endl;
 	else
